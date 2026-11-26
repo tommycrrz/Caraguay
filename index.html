@@ -63,19 +63,22 @@ td.c{text-align:center;white-space:nowrap}td.r{text-align:right;white-space:nowr
 .row em{font:italic 700 5.2mm Arial,sans-serif;border-bottom:1mm solid var(--y);padding-bottom:.6mm}
 .ph{background:var(--y);clip-path:polygon(9mm 0,100% 0,100% 100%,0 100%);height:100%;padding:0 9mm 0 17mm;display:flex;align-items:center;font:900 7.6mm Arial,sans-serif}
 .nf{background:var(--k);color:#fff;text-align:center;font:700 4.6mm Arial,sans-serif;padding:3.2mm}
+.rw{display:flex;gap:8px;align-items:flex-end}.rw select{flex:1;min-width:0}.rw .btn{white-space:nowrap;padding:0 12px}
+select{width:100%;min-height:44px;margin-top:3px;padding:8px 10px;font:16px system-ui,Arial,sans-serif;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:8px}
+.bar2{display:flex;gap:8px;margin:12px 0 18px}.bar2 .btn:first-child{flex:1}
+.li{display:flex;gap:8px;align-items:center;justify-content:space-between;border:1px solid var(--ln);border-radius:8px;padding:8px 10px;font-size:15px}
+.li small{display:block;opacity:.75}
 @page{size:A4;margin:0}
-@media print{body{background:#fff}.ui{display:none}#fit{height:auto!important;overflow:visible}.sheet{transform:none!important;margin:0}
+@media print{body{background:#fff}.ui{display:none!important}#fit{height:auto!important;overflow:visible}.sheet{transform:none!important;margin:0}
 *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
 <div class="ui">
- <div class="note"><strong>Borrador 2.</strong> Los datos cargados son de ejemplo. Editá lo que quieras y la hoja se actualiza sola. Los cambios no se guardan todavía: si cerrás la página, se pierden.</div>
- <div class="bar2"><button class="btn" type="button" id="pr">Imprimir / guardar PDF</button><button class="btn s" type="button" id="rs">Vaciar todo</button></div>
  <details open><summary>Datos del comprobante</summary><div class="in">
-  <div><label for="nro">N° de comprobante</label><input id="nro" inputmode="numeric"></div>
-  <div><label for="fec">Fecha</label><input id="fec" type="date"></div>
-  <div class="f"><label for="cli">Cliente</label><input id="cli"></div>
+  <div><label for="nro">N° de comprobante (automático)</label><input id="nro" readonly></div>
+  <div><label for="fec">Fecha (automática)</label><input id="fec" readonly></div>
+  <div class="f"><label for="cli">Cliente</label><div class="rw"><select id="cli"></select><button class="btn" type="button" id="cn">Cliente nuevo</button></div></div>
   <div class="f"><label for="ctel">Teléfono del cliente</label><input id="ctel" inputmode="tel"></div>
   <div class="f"><label for="equ">Equipo / máquina</label><input id="equ"></div>
   <div><label for="mar">Marca</label><input id="mar"></div>
@@ -89,6 +92,21 @@ td.c{text-align:center;white-space:nowrap}td.r{text-align:right;white-space:nowr
   <div id="its" class="f" style="display:grid;gap:10px"></div>
   <div class="f"><button class="btn" type="button" id="add" style="width:100%">Agregar ítem</button></div>
   <div class="f"><label for="dsc">Descuento ($)</label><input id="dsc" type="number" min="0" step="any" inputmode="decimal"></div>
+ </div></details>
+ <details id="pc"><summary>Clientes guardados</summary><div class="in">
+  <div class="f"><label for="n-n">Nombre o razón social</label><input id="n-n"></div>
+  <div class="f"><label for="n-t">Teléfono</label><input id="n-t" inputmode="tel"></div>
+  <div class="f"><label for="n-s">Lugar del trabajo (sede)</label><input id="n-s"></div>
+  <div class="f"><label for="n-d">Dirección del lugar</label><input id="n-d"></div>
+  <div class="f"><button class="btn" type="button" id="n-ok" style="width:100%">Guardar cliente</button></div>
+  <div class="f" id="cl" style="display:grid;gap:8px"></div>
+ </div></details>
+ <details id="pi"><summary>Catálogo de ítems</summary><div class="in">
+  <div class="f"><label for="c-d">Descripción</label><input id="c-d"></div>
+  <div><label for="c-u">Unidad (opcional)</label><input id="c-u" placeholder="hs, u, km"></div>
+  <div><label for="c-p">Precio unitario</label><input id="c-p" type="number" min="0" step="any" inputmode="decimal"></div>
+  <div class="f"><button class="btn" type="button" id="c-ok" style="width:100%">Guardar ítem</button></div>
+  <div class="f" id="il" style="display:grid;gap:8px"></div>
  </div></details>
 </div>
 <div id="fit"><div class="sheet" id="sheet">
@@ -112,29 +130,43 @@ td.c{text-align:center;white-space:nowrap}td.r{text-align:right;white-space:nowr
  </div>
  <div class="nf">COMPROBANTE NO FISCAL – NO VÁLIDO COMO FACTURA</div>
 </div></div>
+<div class="ui ui2"><div class="bar2"><button class="btn" type="button" id="pr">Generar factura</button><button class="btn s" type="button" id="rs">Vaciar comprobante</button></div></div>
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
-var T=["nro","cli","ctel","equ","mar","ser","sed","dir","pag","obs"];
-var demo={nro:"000124",fec:"2026-11-26",cli:"Cliente Ejemplo S.A.",ctel:"385 123 4567",equ:"Retroexcavadora",mar:"Caterpillar",ser:"CAT-001",sed:"Planta Norte",dir:"Ruta 9 km 12, Santiago del Estero",pag:"Transferencia bancaria",obs:"Trabajo realizado en las instalaciones del cliente.\nGracias por confiar en Caraguay Mecánica Vial.",dsc:"0"};
-var items=[{d:"Reparación de bomba hidráulica",q:1,u:"",p:650000},{d:"Cambio de mangueras",q:1,u:"",p:120000},{d:"Mano de obra",q:8,u:"hs",p:75000}];
+var T=["nro","ctel","equ","mar","ser","sed","dir","pag","obs"];
+var st={g:function(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+var clients=st.g("cmv_clients")||[{id:1,n:"Cliente Ejemplo S.A.",t:"385 123 4567",s:"Planta Norte",d:"Ruta 9 km 12, Santiago del Estero"}];
+var cat=st.g("cmv_catalog")||[{id:1,d:"Reparación de bomba hidráulica",u:"",p:650000},{id:2,d:"Cambio de mangueras",u:"",p:120000},{id:3,d:"Mano de obra",u:"hs",p:75000}];
+var demo={nro:"000124",fec:new Date().toISOString().slice(0,10),pag:"Transferencia bancaria",obs:"Trabajo realizado en las instalaciones del cliente.\nGracias por confiar en Caraguay Mecánica Vial.",dsc:"0",equ:"Retroexcavadora",mar:"Caterpillar",ser:"CAT-001"};
+var items=[{d:"",q:1,u:"",p:0}];
 var money=function(n){return "$ "+n.toLocaleString("es-AR",{maximumFractionDigits:2})};
 var num=function(v){var n=parseFloat(v);return isFinite(n)&&n>0?n:0};
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function opt(v,x){var o=el("option","",x);o.value=v;return o}
 function fld(lbl,val,type,cb,cls){var w=el("div",cls||"");var l=el("label","",lbl),i=el("input");i.value=val;if(type){i.type=type;if(type=="number"){i.min=0;i.step="any";i.inputMode="decimal"}}
 i.addEventListener("input",function(){cb(i.value)});l.appendChild(i);w.appendChild(l);return w}
+function cliSel(){var s=$("cli"),cur=s.value;s.textContent="";s.appendChild(opt("","— Elegir cliente —"));clients.forEach(function(c){s.appendChild(opt(c.id,c.n))});s.value=cur;if(s.value!==cur)s.value=""}
+function listClients(){var b=$("cl");b.textContent="";if(!clients.length){b.appendChild(el("small","","Todavía no hay clientes guardados."))}
+ clients.forEach(function(c,k){var r=el("div","li"),d=el("div");d.appendChild(el("strong","",c.n));d.appendChild(el("small","",[c.t,c.s].filter(Boolean).join(" – ")));
+ var x=el("button","del","Borrar");x.type="button";x.addEventListener("click",function(){if(confirm("¿Borrar a "+c.n+"? Los comprobantes ya hechos no cambian.")){clients.splice(k,1);st.s("cmv_clients",clients);cliSel();listClients();draw()}});r.appendChild(d);r.appendChild(x);b.appendChild(r)})}
+function listCat(){var b=$("il");b.textContent="";if(!cat.length){b.appendChild(el("small","","Todavía no hay ítems en el catálogo."))}
+ cat.forEach(function(c,k){var r=el("div","li"),d=el("div");d.appendChild(el("strong","",c.d));d.appendChild(el("small","",money(c.p)+(c.u?" por "+c.u:"")));
+ var x=el("button","del","Borrar");x.type="button";x.addEventListener("click",function(){if(confirm("¿Borrar este ítem del catálogo?")){cat.splice(k,1);st.s("cmv_catalog",cat);listCat();build()}});r.appendChild(d);r.appendChild(x);b.appendChild(r)})}
 function build(){var box=$("its");box.textContent="";items.forEach(function(it,k){
  var c=el("div","it");
- var d=fld("Descripción",it.d,"",function(v){it.d=v;draw()},"d");
- c.appendChild(d);
+ var w=el("div","d"),l=el("label","","Cargar desde el catálogo (opcional)"),s=el("select");s.appendChild(opt("","— Elegir del catálogo —"));cat.forEach(function(x){s.appendChild(opt(x.id,x.d))});
+ s.addEventListener("change",function(){var x=cat.filter(function(y){return String(y.id)===s.value})[0];if(x){it.d=x.d;it.u=x.u;it.p=x.p;build();draw()}});l.appendChild(s);w.appendChild(l);c.appendChild(w);
+ c.appendChild(fld("Descripción (escribila acá)",it.d,"",function(v){it.d=v;draw()},"d"));
  c.appendChild(fld("Cantidad",it.q,"number",function(v){it.q=num(v);draw()}));
  c.appendChild(fld("Unidad",it.u,"",function(v){it.u=v;draw()}));
  c.appendChild(fld("Precio unit.",it.p,"number",function(v){it.p=num(v);draw()}));
  var x=el("div","x");var del=el("button","del","Eliminar ítem");del.type="button";
- del.addEventListener("click",function(){items.splice(k,1);build();draw()});x.appendChild(del);c.appendChild(x);box.appendChild(c)})}
+ del.addEventListener("click",function(){items.splice(k,1);if(!items.length)items.push({d:"",q:1,u:"",p:0});build();draw()});x.appendChild(del);c.appendChild(x);box.appendChild(c)})}
 function draw(){
  T.forEach(function(k){$("o-"+k).textContent=$(k).value});
- var f=$("fec").value.split("-");$("o-fec").textContent="Fecha: "+(f.length==3?f[2]+"/"+f[1]+"/"+f[0]:"");
+ var cs=$("cli");$("o-cli").textContent=cs.value?cs.options[cs.selectedIndex].text:"";
+ $("o-fec").textContent="Fecha: "+$("fec").value;
  $("o-nro").textContent="N° "+$("nro").value;
  var tb=$("rows");tb.textContent="";var s=0;
  items.forEach(function(it){var imp=it.q*it.p;s+=imp;var r=el("tr");
@@ -145,13 +177,26 @@ function draw(){
  fit()}
 function fit(){var sh=$("sheet"),w=$("fit"),k=Math.min(1,w.clientWidth/sh.offsetWidth);
  sh.style.transform=k<1?"scale("+k+")":"none";w.style.height=k<1?Math.ceil(sh.offsetHeight*k)+"px":"auto"}
+function pick(c){$("cli").value=c?c.id:"";$("ctel").value=c?c.t:"";$("sed").value=c?c.s:"";$("dir").value=c?c.d:""}
 function load(o){T.concat(["fec","dsc"]).forEach(function(k){$(k).value=o[k]||""})}
 T.concat(["fec","dsc"]).forEach(function(k){$(k).addEventListener("input",draw)});
+$("cli").addEventListener("change",function(){var c=clients.filter(function(x){return String(x.id)===$("cli").value})[0];pick(c);draw()});
+$("cn").addEventListener("click",function(){$("pc").open=true;$("pc").scrollIntoView();$("n-n").focus()});
+$("n-ok").addEventListener("click",function(){var n=$("n-n").value.trim();if(!n){alert("Escribí el nombre del cliente.");$("n-n").focus();return}
+ var c={id:Date.now(),n:n,t:$("n-t").value.trim(),s:$("n-s").value.trim(),d:$("n-d").value.trim()};
+ clients.push(c);st.s("cmv_clients",clients);["n-n","n-t","n-s","n-d"].forEach(function(i){$(i).value=""});
+ cliSel();listClients();pick(c);$("pc").open=false;draw();$("cli").scrollIntoView()});
+$("c-ok").addEventListener("click",function(){var d=$("c-d").value.trim();if(!d){alert("Escribí la descripción del ítem.");$("c-d").focus();return}
+ cat.push({id:Date.now(),d:d,u:$("c-u").value.trim(),p:num($("c-p").value)});st.s("cmv_catalog",cat);
+ ["c-d","c-u","c-p"].forEach(function(i){$(i).value=""});listCat();build();$("c-d").focus()});
 $("add").addEventListener("click",function(){items.push({d:"",q:1,u:"",p:0});build();draw();var a=$("its").querySelectorAll(".d input");a[a.length-1].focus()});
-$("pr").addEventListener("click",function(){window.print()});
-$("rs").addEventListener("click",function(){if(confirm("¿Vaciar todos los datos del comprobante?")){load({});items=[];build();draw()}});
+function stamp(){var n=parseInt(st.g("cmv_next"),10)||1,d=new Date();$("nro").value=("000000"+n).slice(-6);$("fec").value=("0"+d.getDate()).slice(-2)+"/"+("0"+(d.getMonth()+1)).slice(-2)+"/"+d.getFullYear()}
+$("pr").addEventListener("click",function(){stamp();draw();window.print()});
+window.addEventListener("afterprint",function(){st.s("cmv_next",(parseInt(st.g("cmv_next"),10)||1)+1);stamp();draw()});
+$("rs").addEventListener("click",function(){if(confirm("¿Vaciar los datos de este comprobante? Los clientes y el catálogo se conservan.")){load({});stamp();pick(null);items=[{d:"",q:1,u:"",p:0}];build();draw()}});
 window.addEventListener("resize",fit);
-load(demo);build();draw();
+st.s("cmv_clients",clients);st.s("cmv_catalog",cat);
+load(demo);stamp();cliSel();pick(clients[0]);listClients();listCat();build();draw();
 })();
 </script>
 </body>
