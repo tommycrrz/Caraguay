@@ -75,7 +75,6 @@ select{width:100%;min-height:44px;margin-top:3px;padding:8px 10px;font:16px syst
 :root[data-theme="dark"]{--u-page:#101113;--u-card:#1b1d21;--u-group:#23262b;--u-field:#14161a;--u-field2:#14161a;--u-bd:#565c66;--u-line:#33373e;--u-tx:#f2f3f5;--u-lb:#d9dce1;--u-mu:#a3aab4;--u-hd:#0b0c0e;--u-btn:#353941;--u-btnh:#454a54;--u-btnbd:#5b616b;--u-ring:#F6B800;--u-fb:#F6B800;--u-gl:rgba(246,184,0,.32);--u-ro:#191b1f;--u-dg:#ff8f86;--u-dgbg:#3b2220}
 :root[data-theme="dark"] .ui{color-scheme:dark}
 body{background:var(--u-page);color:var(--u-tx)}
-body>.ui:first-child::before{content:"Caraguay Mecánica Vial  ·  Nuevo comprobante";display:block;margin:14px 0;padding:16px 18px;background:#1a1a1a;color:#fff;border-radius:14px;border-bottom:4px solid #F6B800;font:800 17px/1.2 system-ui,Arial,sans-serif;letter-spacing:.02em}
 .ui details{background:var(--u-card);border:1px solid var(--u-line);border-radius:14px;margin:0 0 16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .ui summary{display:flex;align-items:center;gap:12px;min-height:56px;padding:0 18px;list-style:none;background:var(--u-hd);color:#fff;font-size:16px;font-weight:800;letter-spacing:.02em;border-bottom:3px solid #F6B800;cursor:pointer;user-select:none}
 .ui summary::-webkit-details-marker{display:none}
@@ -123,12 +122,73 @@ body>.ui:first-child::before{content:"Caraguay Mecánica Vial  ·  Nuevo comprob
 .ui .bar2{display:flex;gap:12px;margin:8px 0 32px}.ui .bar2 .btn:first-child{flex:1}
 @media screen{.sheet{box-shadow:0 8px 28px rgba(0,0,0,.22)}}
 @media (max-width:359px){.ui .in,.ui .gb,.ui .it{grid-template-columns:1fr}.ui .bar2{flex-direction:column}}
+/* ===== Inicio, navegación y módulos (solo pantalla) ===== */
+#splash{position:fixed;inset:0;z-index:99;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .4s}
+#splash.out{opacity:0;pointer-events:none}
+#splash img{width:min(78vw,380px);height:auto;animation:spi .8s ease-out both}
+#splash h1{margin:0;font:800 21px system-ui,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#1a1a1a;animation:spi .8s .15s ease-out both}
+.spb{width:min(70vw,320px);height:6px;background:#e3e5e8;border-radius:3px;overflow:hidden}.spb i{display:block;height:100%;background:#F6B800;transform:scaleX(0);transform-origin:left}
+#splash b{font:700 14px system-ui,Arial,sans-serif;color:#5a616a}
+@keyframes spi{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#splash img,#splash h1{animation:none}#splash{transition:none}}
+.ui [hidden]{display:none!important}
+.ui .vh{display:flex;align-items:center;gap:12px;margin:14px 0;padding:10px 12px;background:#1a1a1a;border-bottom:4px solid #F6B800;border-radius:14px;position:sticky;top:8px;z-index:5}
+.ui .vh h1{margin:0;color:#fff;font:800 18px/1.2 system-ui,Arial,sans-serif;letter-spacing:.02em}
+.ui .vh .btn{min-height:44px;padding:0 14px;background:#2c3037;border-color:#5b616b;color:#fff}
+.ui .hhd{margin:14px 0 18px;padding:18px;background:#1a1a1a;color:#fff;border-radius:14px;border-bottom:4px solid #F6B800}.ui .hhd b{display:block;font:800 21px system-ui,Arial,sans-serif;letter-spacing:.02em}.ui .hhd span{color:#c9cdd3;font-size:14px}
+.ui .hg{display:grid;gap:12px;margin-bottom:18px}
+.ui .hc{display:flex;align-items:center;gap:16px;width:100%;min-height:96px;padding:16px 18px;text-align:left;font:inherit;color:var(--u-tx);background:var(--u-card);border:1px solid var(--u-bd);border-left:6px solid #F6B800;border-radius:16px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.ui .hc:hover{background:var(--u-group)}.ui .hc:active{transform:translateY(1px)}.ui .hc:focus-visible{outline:3px solid var(--u-ring);outline-offset:3px}
+.ui .hc .ic{font-size:34px;line-height:1}.ui .hc strong{display:block;font-size:18px;letter-spacing:.04em;text-transform:uppercase}.ui .hc small{display:block;margin-top:4px;font-size:14px;color:var(--u-mu)}
+.ui .hc.hp{background:#1a1a1a;color:#fff;border-color:#1a1a1a;border-left-color:#F6B800}.ui .hc.hp small{color:#c9cdd3}.ui .hc.hp:hover{background:#2c3037}
+@media (min-width:600px){.ui .hg{grid-template-columns:1fr 1fr}.ui .hc.hp{grid-column:1/-1}}
+.ui .li{flex-wrap:wrap}.ui .li>div:first-child{flex:1 1 200px;min-width:0}
+.ui .hb{width:100%;text-align:left;font:inherit;cursor:pointer}.ui .hb:hover{background:var(--u-group)}
+.ui .tg{display:inline-block;margin-top:4px;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:800;background:var(--u-group);border:1px solid var(--u-bd);color:var(--u-tx)}.ui .tg.ok{background:#F6B800;border-color:#c99700;color:#1a1a1a}
+.ui .lst{display:grid;gap:10px;margin:12px 0 28px}.ui .rw2{display:flex;gap:10px;flex-wrap:wrap}.ui .rw2 .btn,.ui .rw2 .del{flex:1 1 120px}
+.ui .sq{margin:0 0 12px}.ui .big{font:800 26px system-ui,Arial,sans-serif;color:var(--u-tx)}
+#h-pv{overflow:hidden;margin:12px 0}#hp{display:none}
+@media print{#splash,#hp,.view:not(#v-factura){display:none!important}body.ph #v-factura{display:none!important}body.ph #hp{display:block!important}}
 @page{size:A4;margin:0}
 @media print{body{background:#fff}.ui{display:none!important}#fit{height:auto!important;overflow:visible}.sheet{transform:none!important;margin:0}
 *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
+<div id="splash"><img alt="Caraguay Mecánica Vial"><h1>Caraguay Mecánica Vial</h1><div class="spb"><i id="sp-b"></i></div><b id="sp-p">1 %</b></div>
+<div id="home" class="ui" hidden><div class="hhd"><b>Caraguay Mecánica Vial</b><span>Panel de gestión</span></div><div class="hg"><button class="hc hp" type="button" data-go="factura"><span class="ic">🧾</span><span><strong>Nueva factura</strong><small id="s-f">Generar un comprobante</small></span></button><button class="hc " type="button" data-go="clientes"><span class="ic">👥</span><span><strong>Clientes</strong><small id="s-c"></small></span></button><button class="hc " type="button" data-go="trabajos"><span class="ic">🔧</span><span><strong>Trabajos</strong><small id="s-t"></small></span></button><button class="hc " type="button" data-go="historial"><span class="ic">🗂️</span><span><strong>Historial</strong><small id="s-h"></small></span></button><button class="hc " type="button" data-go="pagos"><span class="ic">💰</span><span><strong>Pagos y deudas</strong><small id="s-p"></small></span></button></div>
+ <details><summary>Copia de seguridad</summary><div class="in"><p class="hint">Todo se guarda en este teléfono. Generá una copia, copiala y guardala en un lugar seguro (por ejemplo, enviándotela por WhatsApp). Para restaurarla, pegá el texto y tocá Restaurar.</p><div class="f"><label for="bk">Texto de la copia</label><textarea id="bk"></textarea></div><div class="f rw2"><button class="btn" type="button" id="bk-g">Generar copia</button><button class="btn s" type="button" id="bk-c">Copiar</button><button class="btn s" type="button" id="bk-r">Restaurar</button></div></div></details></div>
+<div id="v-clientes" class="view ui" hidden><div class="vh"><button class="btn" type="button" data-go="inicio">← Menú</button><h1>Clientes</h1></div>
+ <details open id="cf"><summary id="cf-t">Cliente nuevo</summary><div class="in">
+  <div class="f"><label for="k-n">Nombre o razón social</label><input id="k-n"></div>
+  <div><label for="k-t">Teléfono</label><input id="k-t" inputmode="tel"></div><div><label for="k-s">Sede</label><input id="k-s"></div>
+  <div class="f"><label for="k-d">Dirección</label><input id="k-d"></div>
+  <div class="f" id="k-eqw" hidden><section class="gb"><h3 class="gt">Máquinas del cliente</h3><div class="f lst" id="k-el" style="margin:0"></div>
+   <div class="f"><label for="k-eq">Equipo</label><input id="k-eq"></div><div><label for="k-em">Marca</label><input id="k-em"></div><div><label for="k-es">Serie</label><input id="k-es"></div>
+   <div class="f"><button class="btn" type="button" id="k-ea" style="width:100%">Agregar máquina</button></div></section></div>
+  <div class="f rw2"><button class="btn" type="button" id="k-ok">Guardar cliente</button><button class="btn s" type="button" id="k-cx" hidden>Cancelar edición</button></div></div></details>
+ <input id="k-q" type="search" placeholder="Buscar cliente…" aria-label="Buscar cliente"><div class="lst" id="k-l"></div></div>
+<div id="v-trabajos" class="view ui" hidden><div class="vh"><button class="btn" type="button" data-go="inicio">← Menú</button><h1>Trabajos</h1></div>
+ <details open><summary>Registrar trabajo</summary><div class="in">
+  <div class="f"><label for="j-c">Cliente</label><select id="j-c"></select></div><div class="f"><label for="j-m">Máquina</label><select id="j-m"></select></div>
+  <div><label for="j-f">Fecha</label><input id="j-f" type="date"></div><div><label for="j-s">Estado</label><select id="j-s"><option>Pendiente</option><option>En curso</option><option>Terminado</option></select></div>
+  <div class="f"><label for="j-d">Trabajo realizado</label><textarea id="j-d"></textarea></div>
+  <div class="f"><label for="j-v">Comprobante vinculado (opcional)</label><select id="j-v"></select></div>
+  <div class="f"><button class="btn" type="button" id="j-ok" style="width:100%">Guardar trabajo</button></div></div></details>
+ <label for="j-fl">Mostrar</label><select id="j-fl"><option value="">Todos</option><option>Pendiente</option><option>En curso</option><option>Terminado</option></select><div class="lst" id="j-l"></div></div>
+<div id="v-historial" class="view ui" hidden><div class="vh"><button class="btn" type="button" data-go="inicio">← Menú</button><h1>Historial</h1></div>
+ <div id="h-list"><input id="h-q" type="search" placeholder="Buscar por número o cliente…" aria-label="Buscar comprobante"><div class="lst" id="h-l"></div></div>
+ <div id="h-det" hidden><button class="btn s" type="button" id="h-bk">← Volver al historial</button><div id="h-pv"></div><div class="gb" style="margin-bottom:12px"><h3 class="gt" id="h-t"></h3><div class="f" id="h-i"></div><div class="f lst" id="h-p" style="margin:0"></div></div>
+  <div class="rw2" style="margin-bottom:28px"><button class="btn" type="button" id="h-pr">Imprimir / guardar PDF</button><button class="btn s" type="button" id="h-pg">Registrar pago</button></div></div></div>
+<div id="v-pagos" class="view ui" hidden><div class="vh"><button class="btn" type="button" data-go="inicio">← Menú</button><h1>Pagos y deudas</h1></div>
+ <div class="gb" style="margin-bottom:16px"><h3 class="gt">Deuda total</h3><div class="f big" id="p-tot"></div></div>
+ <details open><summary>Registrar pago</summary><div class="in">
+  <div class="f"><label for="p-d">Comprobante con saldo</label><select id="p-d"></select></div>
+  <div><label for="p-v">Monto ($)</label><input id="p-v" type="number" min="0" step="any" inputmode="decimal"></div>
+  <div><label for="p-m">Medio de pago</label><select id="p-m"><option>Efectivo</option><option>Transferencia</option><option>Cheque</option><option>Otro</option></select></div>
+  <div class="f"><button class="btn" type="button" id="p-ok" style="width:100%">Registrar pago</button><p class="hint" id="p-msg" style="margin-top:8px"></p></div></div></details>
+ <h2 class="pvt">Deudas por cliente</h2><div class="lst" id="p-l"></div></div>
+<div id="v-factura" class="view" hidden><div class="ui"><div class="vh"><button class="btn" type="button" data-go="inicio">← Menú</button><h1>Nueva factura</h1></div></div>
 <div class="ui">
  <details open><summary>Datos del comprobante</summary><div class="in">
   <section class="gb"><h3 class="gt">Comprobante</h3>
@@ -197,7 +257,8 @@ body>.ui:first-child::before{content:"Caraguay Mecánica Vial  ·  Nuevo comprob
  </div>
  <div class="nf">COMPROBANTE NO FISCAL – NO VÁLIDO COMO FACTURA</div>
 </div></div>
-<div class="ui ui2"><div class="bar2"><button class="btn" type="button" id="pr">Generar factura</button><button class="btn s" type="button" id="rs">Vaciar comprobante</button></div></div>
+<div class="ui ui2"><div class="bar2"><button class="btn" type="button" id="pr">Generar factura</button><button class="btn s" type="button" id="rs">Vaciar comprobante</button></div></div></div>
+<div id="hp"></div>
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
@@ -243,7 +304,7 @@ function draw(){
  var dsc=Math.min(num($("dsc").value),s);
  $("o-sub").textContent=money(s);$("o-dsc").textContent=money(dsc);$("o-tot").textContent=money(s-dsc);
  fit()}
-function fit(){var sh=$("sheet"),w=$("fit"),k=Math.min(1,w.clientWidth/sh.offsetWidth);
+function fit(){var sh=$("sheet"),w=$("fit");if(!w.clientWidth)return;var k=Math.min(1,w.clientWidth/sh.offsetWidth);
  sh.style.transform=k<1?"scale("+k+")":"none";w.style.height=k<1?Math.ceil(sh.offsetHeight*k)+"px":"auto"}
 function pick(c){$("cli").value=c?c.id:"";$("ctel").value=c?c.t:"";$("sed").value=c?c.s:"";$("dir").value=c?c.d:""}
 function load(o){T.concat(["fec","dsc"]).forEach(function(k){$(k).value=o[k]||""})}
@@ -259,12 +320,117 @@ $("c-ok").addEventListener("click",function(){var d=$("c-d").value.trim();if(!d)
  ["c-d","c-u","c-p"].forEach(function(i){$(i).value=""});listCat();build();$("c-d").focus()});
 $("add").addEventListener("click",function(){items.push({d:"",q:1,c:"",p:""});build();draw();var a=$("its").querySelectorAll(".d input");a[a.length-1].focus()});
 function stamp(){var n=parseInt(st.g("cmv_next"),10)||1,d=new Date();$("nro").value=("000000"+n).slice(-6);$("fec").value=("0"+d.getDate()).slice(-2)+"/"+("0"+(d.getMonth()+1)).slice(-2)+"/"+d.getFullYear()}
-$("pr").addEventListener("click",function(){stamp();draw();window.print()});
-window.addEventListener("afterprint",function(){st.s("cmv_next",(parseInt(st.g("cmv_next"),10)||1)+1);stamp();draw()});
+$("pr").addEventListener("click",function(){stamp();draw();saveDoc();st.s("cmv_next",(parseInt(st.g("cmv_next"),10)||1)+1);window.print()});
+window.addEventListener("afterprint",function(){document.body.classList.remove("ph");stamp();draw()});
 $("rs").addEventListener("click",function(){if(confirm("¿Vaciar los datos de este comprobante? Los clientes y el catálogo se conservan.")){load({});stamp();pick(null);$("mo").value="";items=[{d:"",q:1,c:"",p:""}];build();draw()}});
 $("mo").addEventListener("input",draw);window.addEventListener("resize",fit);
 st.s("cmv_clients",clients);st.s("cmv_catalog",cat);
 load(demo);stamp();cliSel();pick(clients[0]);listClients();listCat();build();draw();
+/* ===== Navegación, inicio y módulos ===== */
+var docs=st.g("cmv_docs")||[],jobs=st.g("cmv_jobs")||[],R={},ed=null,cur=null,pend=null;
+var iso=function(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)};
+var fd=function(s){var a=String(s||"").split("-");return a.length==3?a[2]+"/"+a[1]+"/"+a[0]:(s||"")};
+var r2=function(n){return Math.round(n*100)/100};
+var paid=function(d){return d.pagos.reduce(function(a,p){return a+p.v},0)};
+var saldo=function(d){return r2(d.tot-paid(d))};
+var deuda=function(l){return l.reduce(function(a,d){return a+Math.max(0,saldo(d))},0)};
+var sv=function(){st.s("cmv_docs",docs);st.s("cmv_jobs",jobs);st.s("cmv_clients",clients)};
+var btn=function(c,t,f){var b=el("button",c,t);b.type="button";b.onclick=f;return b};
+var VIEWS=["inicio","factura","clientes","trabajos","historial","pagos"];
+function show(v){VIEWS.forEach(function(n){$(n=="inicio"?"home":"v-"+n).hidden=n!==v});window.scrollTo(0,0);if(v=="factura")fit();if(R[v])R[v]()}
+function route(){var v=location.hash.slice(1);show(VIEWS.indexOf(v)<0?"inicio":v)}
+window.addEventListener("hashchange",route);
+document.addEventListener("click",function(e){var b=e.target.closest("[data-go]");if(b){location.hash=b.getAttribute("data-go");route()}});
+/* guardar comprobante emitido (copia fija) */
+function saveDoc(){var cs=$("cli"),sub=0,its=items.map(function(it){var cn=cat.filter(function(y){return it.c&&String(y.id)===String(it.c)})[0];return{n:cn?cn.d:"",d:it.d,q:it.q,p:num(it.p)}}).filter(function(i){return i.n||i.d||i.p>0});
+ var mo=num($("mo").value);its.forEach(function(i){sub+=i.q*i.p});sub+=mo;if(!its.length&&!(mo>0))return;var dsc=Math.min(num($("dsc").value),sub);
+ var d={id:Date.now(),nro:$("nro").value,fec:$("fec").value,cid:cs.value,cli:cs.value?cs.options[cs.selectedIndex].text:"Sin cliente"};
+ ["ctel","equ","mar","ser","sed","dir","pag","obs"].forEach(function(k){d[k]=$(k).value});d.items=its;d.mo=mo;d.dsc=dsc;d.tot=r2(sub-dsc);d.pagos=[];docs.push(d);sv()}
+/* hoja de un comprobante guardado (misma hoja, sin cambiar su diseño) */
+function mk(d){var c=$("sheet").cloneNode(true),q=function(i){return c.querySelector("#"+i)};c.style.transform="none";
+ q("o-nro").textContent="N° "+d.nro;q("o-fec").textContent="Fecha: "+d.fec;
+ ["cli","ctel","equ","mar","ser","sed","dir","pag","obs"].forEach(function(k){q("o-"+k).textContent=d[k]||""});
+ var tb=q("rows");tb.textContent="";d.items.forEach(function(it){var r=el("tr"),td=el("td");if(it.n)td.appendChild(el("b","",it.n));if(it.n&&it.d)td.appendChild(document.createElement("br"));if(it.d)td.appendChild(document.createTextNode(it.d));
+  r.appendChild(td);r.appendChild(el("td","c",String(it.q)));r.appendChild(el("td","r",money(it.p)));r.appendChild(el("td","r",money(it.q*it.p)));tb.appendChild(r)});
+ var e=el("tr");for(var i=0;i<4;i++)e.appendChild(el("td","","\u00a0"));tb.appendChild(e);
+ q("o-mo").textContent=money(d.mo);q("o-mow").hidden=!(d.mo>0);q("o-sub").textContent=money(d.tot+d.dsc);q("o-dsc").textContent=money(d.dsc);q("o-tot").textContent=money(d.tot);
+ c.querySelectorAll("[id]").forEach(function(x){x.removeAttribute("id")});return c}
+function fitBox(b,s){var k=Math.min(1,b.clientWidth/s.offsetWidth);s.style.transformOrigin="top left";s.style.transform=k<1?"scale("+k+")":"none";b.style.height=k<1?Math.ceil(s.offsetHeight*k)+"px":"auto"}
+/* INICIO */
+R.inicio=function(){$("s-c").textContent=clients.length+" registrados";$("s-t").textContent=jobs.length+" registrados";$("s-h").textContent=docs.length+" emitidos";var d=deuda(docs);$("s-p").textContent=d>0?"Deuda: "+money(d):"Sin deudas"};
+/* CLIENTES */
+function eqList(){var b=$("k-el");b.textContent="";((ed&&ed.e)||[]).forEach(function(m,i){var r=el("div","li"),t=el("div");t.appendChild(el("strong","",m.q));t.appendChild(el("small","",[m.m,m.s].filter(Boolean).join(" · ")));r.appendChild(t);r.appendChild(btn("del","Quitar",function(){ed.e.splice(i,1);sv();eqList()}));b.appendChild(r)})}
+function editC(c){ed=c;$("k-n").value=c?c.n:"";$("k-t").value=c?c.t:"";$("k-s").value=c?c.s:"";$("k-d").value=c?c.d:"";$("cf-t").textContent=c?"Editar cliente":"Cliente nuevo";$("k-eqw").hidden=!c;$("k-cx").hidden=!c;if(c){if(!c.e)c.e=[];$("cf").open=true;$("cf").scrollIntoView()}eqList()}
+function afterC(){sv();cliSel();listClients();R.clientes()}
+$("k-ok").onclick=function(){var n=$("k-n").value.trim();if(!n){alert("Escribí el nombre del cliente.");$("k-n").focus();return}
+ var v={n:n,t:$("k-t").value.trim(),s:$("k-s").value.trim(),d:$("k-d").value.trim()};
+ if(ed){Object.assign(ed,v);afterC();editC(null)}else{var c=Object.assign({id:Date.now(),e:[]},v);clients.push(c);afterC();editC(c)}};
+$("k-cx").onclick=function(){editC(null)};
+$("k-ea").onclick=function(){var q=$("k-eq").value.trim();if(!q){alert("Escribí el equipo.");return}ed.e.push({q:q,m:$("k-em").value.trim(),s:$("k-es").value.trim()});["k-eq","k-em","k-es"].forEach(function(i){$(i).value=""});sv();eqList();R.clientes()};
+$("k-q").addEventListener("input",function(){R.clientes()});
+R.clientes=function(){var q=$("k-q").value.toLowerCase(),b=$("k-l");b.textContent="";
+ var l=clients.filter(function(c){return(c.n+" "+(c.t||"")).toLowerCase().indexOf(q)>-1});if(!l.length)b.appendChild(el("p","hint","No hay clientes para mostrar."));
+ l.forEach(function(c){var r=el("div","li"),t=el("div"),dd=deuda(docs.filter(function(d){return d.cid==c.id}));
+  t.appendChild(el("strong","",c.n));t.appendChild(el("small","",[c.t,c.s,c.d].filter(Boolean).join(" · ")));t.appendChild(el("small","",(c.e||[]).length+" máquina(s)"+(dd>0?" · Deuda "+money(dd):"")));
+  var a=el("div","rw2");a.appendChild(btn("btn s","Editar",function(){editC(c)}));
+  a.appendChild(btn("del","Borrar",function(){if(confirm("¿Borrar a "+c.n+"? Sus comprobantes guardados no cambian.")){clients.splice(clients.indexOf(c),1);if(ed===c)editC(null);afterC()}}));
+  r.appendChild(t);r.appendChild(a);b.appendChild(r)})};
+/* TRABAJOS */
+function jSel(){var c=clients.filter(function(x){return String(x.id)===$("j-c").value})[0],m=$("j-m"),v=$("j-v");m.textContent="";m.appendChild(opt("","— Sin especificar —"));
+ ((c&&c.e)||[]).forEach(function(x,i){m.appendChild(opt(i,[x.q,x.m,x.s].filter(Boolean).join(" · ")))});
+ v.textContent="";v.appendChild(opt("","— Ninguno —"));docs.filter(function(d){return c&&d.cid==c.id}).forEach(function(d){v.appendChild(opt(d.id,"N° "+d.nro+" – "+d.fec))})}
+$("j-c").addEventListener("change",jSel);$("j-fl").addEventListener("change",function(){R.trabajos()});
+$("j-ok").onclick=function(){var cid=$("j-c").value,d=$("j-d").value.trim();if(!cid){alert("Elegí un cliente.");return}if(!d){alert("Describí el trabajo realizado.");$("j-d").focus();return}
+ var c=clients.filter(function(x){return String(x.id)===cid})[0],mi=$("j-m").value,dc=docs.filter(function(x){return String(x.id)===$("j-v").value})[0];
+ jobs.push({id:Date.now(),cid:cid,cn:c?c.n:"",eq:mi===""?"":$("j-m").options[$("j-m").selectedIndex].text,f:$("j-f").value||iso(),d:d,st:$("j-s").value,dn:dc?dc.nro:""});
+ $("j-d").value="";sv();R.trabajos()};
+R.trabajos=function(){var s=$("j-c"),cur0=s.value;s.textContent="";s.appendChild(opt("","— Elegir cliente —"));clients.forEach(function(c){s.appendChild(opt(c.id,c.n))});s.value=cur0;if(s.value!==cur0)s.value="";if(!$("j-f").value)$("j-f").value=iso();jSel();
+ var b=$("j-l"),f=$("j-fl").value;b.textContent="";var l=jobs.filter(function(j){return!f||j.st===f}).slice().reverse();if(!l.length)b.appendChild(el("p","hint","No hay trabajos para mostrar."));
+ l.forEach(function(j){var r=el("div","li"),t=el("div");t.appendChild(el("strong","",j.cn+" · "+fd(j.f)));if(j.eq)t.appendChild(el("small","",j.eq));t.appendChild(el("small","",j.d));if(j.dn)t.appendChild(el("small","","Comprobante N° "+j.dn));
+  var a=el("div","rw2"),s2=el("select");["Pendiente","En curso","Terminado"].forEach(function(x){s2.appendChild(opt(x,x))});s2.value=j.st;s2.setAttribute("aria-label","Estado");s2.style.margin="0";s2.onchange=function(){j.st=s2.value;sv();R.trabajos()};
+  a.appendChild(s2);a.appendChild(btn("del","Borrar",function(){if(confirm("¿Borrar este trabajo?")){jobs.splice(jobs.indexOf(j),1);sv();R.trabajos()}}));r.appendChild(t);r.appendChild(a);b.appendChild(r)})};
+/* HISTORIAL */
+function openDoc(d){cur=d;$("h-list").hidden=true;$("h-det").hidden=false;window.scrollTo(0,0);var pv=$("h-pv");pv.textContent="";var c=mk(d);pv.appendChild(c);fitBox(pv,c);
+ $("h-t").textContent="N° "+d.nro+" · "+d.cli;var s=saldo(d);$("h-i").textContent="Total "+money(d.tot)+" · Pagado "+money(paid(d))+" · Saldo "+money(s);
+ var b=$("h-p");b.textContent="";d.pagos.forEach(function(p,i){var r=el("div","li");r.appendChild(el("div","",p.f+" · "+p.m+" · "+money(p.v)));r.appendChild(btn("del","Quitar",function(){if(confirm("¿Quitar este pago?")){d.pagos.splice(i,1);sv();openDoc(d)}}));b.appendChild(r)});
+ $("h-pg").hidden=s<=0}
+R.historial=function(){if(cur&&!$("h-det").hidden){openDoc(cur);return}$("h-det").hidden=true;$("h-list").hidden=false;var q=$("h-q").value.toLowerCase(),b=$("h-l");b.textContent="";
+ var l=docs.filter(function(d){return(d.nro+" "+d.cli).toLowerCase().indexOf(q)>-1}).slice().reverse();if(!l.length)b.appendChild(el("p","hint","Todavía no hay comprobantes. Se guardan al tocar «Generar factura»."));
+ l.forEach(function(d){var r=el("button","li hb"),t=el("div"),s=saldo(d);r.type="button";t.appendChild(el("strong","","N° "+d.nro+" · "+d.cli));t.appendChild(el("small","",d.fec));
+  var u=el("div");u.appendChild(el("strong","",money(d.tot)));u.appendChild(document.createElement("br"));u.appendChild(el("span","tg"+(s<=0?" ok":""),s<=0?"Pagado":"Saldo "+money(s)));r.appendChild(t);r.appendChild(u);r.onclick=function(){openDoc(d)};b.appendChild(r)})};
+$("h-q").addEventListener("input",function(){cur=null;R.historial()});
+$("h-bk").onclick=function(){cur=null;R.historial()};
+$("h-pr").onclick=function(){var h=$("hp");h.textContent="";h.appendChild(mk(cur));document.body.classList.add("ph");window.print()};
+$("h-pg").onclick=function(){pend=cur.id;location.hash="pagos";route()};
+window.addEventListener("resize",function(){if(cur&&!$("h-det").hidden){var p=$("h-pv");if(p.firstChild)fitBox(p,p.firstChild)}});
+/* PAGOS Y DEUDAS */
+function dSel(id){var s=$("p-d");s.textContent="";s.appendChild(opt("","— Elegir comprobante —"));docs.filter(function(d){return saldo(d)>0}).forEach(function(d){s.appendChild(opt(d.id,"N° "+d.nro+" – "+d.cli+" – saldo "+money(saldo(d))))});
+ s.value=id?String(id):"";if(s.value!==(id?String(id):""))s.value="";dv()}
+function dv(){var d=docs.filter(function(x){return String(x.id)===$("p-d").value})[0];$("p-v").value=d?saldo(d):""}
+$("p-d").addEventListener("change",dv);
+$("p-ok").onclick=function(){var d=docs.filter(function(x){return String(x.id)===$("p-d").value})[0],v=num($("p-v").value),m=$("p-msg");
+ if(!d){alert("Elegí el comprobante.");return}if(!(v>0)){alert("Ingresá un monto mayor a cero.");return}if(v>saldo(d)+0.005){alert("El monto supera el saldo ("+money(saldo(d))+").");return}
+ d.pagos.push({f:fd(iso()),m:$("p-m").value,v:r2(v)});sv();R.pagos();$("p-msg").textContent="Pago registrado: "+money(v)+" en el comprobante N° "+d.nro+"."};
+R.pagos=function(){$("p-tot").textContent=money(deuda(docs));dSel(pend);if(pend){$("p-msg").textContent="";pend=null}
+ var b=$("p-l"),g={};b.textContent="";docs.filter(function(d){return saldo(d)>0}).forEach(function(d){var k=d.cid||("n:"+d.cli);(g[k]=g[k]||[]).push(d)});
+ var ks=Object.keys(g);if(!ks.length)b.appendChild(el("p","hint","No hay deudas pendientes."));
+ ks.forEach(function(k){var l=g[k],r=el("div","li"),t=el("div");t.appendChild(el("strong","",l[0].cli+" · "+money(deuda(l))));
+  l.forEach(function(d){var x=el("div","rw2");x.style.cssText="margin-top:8px;align-items:center";x.appendChild(el("small","","N° "+d.nro+" · "+d.fec+" · saldo "+money(saldo(d))+" de "+money(d.tot)));x.firstChild.style.flex="1 1 160px";
+   x.appendChild(btn("btn s","Pagar",function(){dSel(d.id);$("p-d").scrollIntoView()}));t.appendChild(x)});r.appendChild(t);b.appendChild(r)})};
+/* COPIA DE SEGURIDAD */
+var BK=["cmv_clients","cmv_catalog","cmv_next","cmv_docs","cmv_jobs"];
+$("bk-g").onclick=function(){var o={};BK.forEach(function(k){o[k]=st.g(k)});$("bk").value=JSON.stringify(o);$("bk").select()};
+$("bk-c").onclick=function(){try{navigator.clipboard.writeText($("bk").value)}catch(e){$("bk").select()}};
+$("bk-r").onclick=function(){var o;try{o=JSON.parse($("bk").value)}catch(e){alert("El texto no es una copia válida.");return}
+ if(!o||typeof o!="object"||BK.some(function(k){return o[k]!=null&&(k=="cmv_next"?typeof o[k]!="number":!Array.isArray(o[k]))})){alert("El texto no es una copia válida.");return}
+ if(!confirm("Esto reemplaza los datos guardados en este teléfono. ¿Continuar?"))return;BK.forEach(function(k){if(o[k]!=null)st.s(k,o[k])});location.reload()};
+/* PANTALLA DE INICIO (solo al entrar o recargar) */
+var sp=$("splash"),DUR=matchMedia("(prefers-reduced-motion:reduce)").matches?400:1700,t0=performance.now();
+sp.querySelector("img").src=document.querySelector(".hd img").src;
+(function tick(t){var k=Math.min(1,Math.max(0,(t-t0)/DUR));$("sp-b").style.transform="scaleX("+k+")";$("sp-p").textContent=Math.max(1,Math.round(k*100))+" %";
+ if(k<1)requestAnimationFrame(tick);else{sp.classList.add("out");setTimeout(function(){sp.remove()},450)}})(t0);
+show("inicio");
+
 })();
 </script>
 </body>
