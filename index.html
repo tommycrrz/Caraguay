@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Caraguay Mecánica Vial – Comprobante (borrador 2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&display=swap">
 <style>
 :root{--y:#F6B800;--k:#1a1a1a;--g:#e6e6e6;--g2:#f3f3f3;--bg:#d9dbde;--pn:#fff;--tx:#1a1a1a;--ln:#c8c8c8;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -97,7 +99,7 @@ body{background:var(--u-page);color:var(--u-tx)}
 .ui input:hover,.ui select:hover,.ui textarea:hover{border-color:var(--u-mu)}
 .ui input:focus,.ui select:focus,.ui textarea:focus{outline:none;border-color:var(--u-fb);box-shadow:0 0 0 4px var(--u-gl)}
 .ui input[readonly],.ui input[readonly]:hover{background:var(--u-ro);color:var(--u-mu);border:1.5px dashed var(--u-bd);cursor:default;font-weight:700}
-#its{counter-reset:it}
+#its{counter-reset:it}#mqs{counter-reset:mq}.ui .it.mq::before{counter-increment:mq;content:"Máquina " counter(mq)}
 .ui .it{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;padding:14px;background:var(--u-card);border:1px solid var(--u-bd);border-left:5px solid #F6B800;border-radius:12px}
 .ui .it::before{counter-increment:it;content:"Ítem " counter(it);grid-column:1/-1;font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--u-mu)}
 .ui .it input,.ui .it select{background:var(--u-field2)}
@@ -113,7 +115,7 @@ body{background:var(--u-page);color:var(--u-tx)}
 .ui #pr,.ui #n-ok,.ui #c-ok{background:#F6B800;color:#1a1a1a;border-color:#c99700}
 .ui #pr:hover,.ui #n-ok:hover,.ui #c-ok:hover{background:#ffc928}
 .ui #pr{min-height:56px;font-size:17px;font-weight:800;letter-spacing:.02em}
-.ui #add::before,.ui #cn::before{content:"+";font-size:20px;line-height:1;font-weight:800;color:#F6B800}
+.ui #add::before,.ui #cn::before,.ui #mq-add::before{content:"+";font-size:20px;line-height:1;font-weight:800;color:#F6B800}
 .ui .del{background:transparent;color:var(--u-dg);border:1.5px solid var(--u-dg)}
 .ui .del:hover{background:var(--u-dgbg)}
 .ui .btn:focus-visible,.ui .del:focus-visible{outline:3px solid var(--u-ring);outline-offset:3px}
@@ -148,7 +150,11 @@ body{background:var(--u-page);color:var(--u-tx)}
 .ui .lst{display:grid;gap:10px;margin:12px 0 28px}.ui .rw2{display:flex;gap:10px;flex-wrap:wrap}.ui .rw2 .btn,.ui .rw2 .del{flex:1 1 120px}
 .ui .sq{margin:0 0 12px}.ui .big{font:800 26px system-ui,Arial,sans-serif;color:var(--u-tx)}
 #h-pv{overflow:hidden;margin:12px 0}#hp{display:none}
-@media print{#splash,#hp,.view:not(#v-factura){display:none!important}body.ph #v-factura{display:none!important}body.ph #hp{display:block!important}}
+@media print{#splash,#hp,.view:not(#v-factura){display:none!important}body.hprint #v-factura{display:none!important}body.hprint #hp{display:block!important}}
+/* ===== Tipografía: Anton para títulos; Arial/sistema para formularios, textos e importes ===== */
+:root{--fh:Anton,Impact,"Arial Narrow",system-ui,sans-serif}
+.ui summary,.ui .gt,.ui .pvt,.ui .vh h1,.ui .hhd b,.ui .hc strong,#splash h1,.sheet .doc small,.sheet .doc b,.sheet .box h4,.sheet thead th,.sheet .tot .t span:first-child{font-family:var(--fh);font-weight:400;letter-spacing:.04em}
+.sheet .tot .t{align-items:baseline}.ui summary{font-size:17px}.ui .gt{font-size:13px}.ui .pvt{font-size:14px}.ui .vh h1{font-size:21px}.ui .hhd b{font-size:25px}.ui .hc strong{font-size:20px}#splash h1{font-size:26px;letter-spacing:.08em}
 @page{size:A4;margin:0}
 @media print{body{background:#fff}.ui{display:none!important}#fit{height:auto!important;overflow:visible}.sheet{transform:none!important;margin:0}
 *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
@@ -198,9 +204,8 @@ body{background:var(--u-page);color:var(--u-tx)}
   <div class="f"><label for="cli">Cliente</label><div class="rw"><select id="cli"></select><button class="btn" type="button" id="cn">Cliente nuevo</button></div></div>
   <div class="f"><label for="ctel">Teléfono del cliente</label><input id="ctel" inputmode="tel"></div>
   </section><section class="gb"><h3 class="gt">Equipo o máquina</h3>
-  <div class="f"><label for="equ">Equipo / máquina</label><input id="equ"></div>
-  <div><label for="mar">Marca</label><input id="mar"></div>
-  <div><label for="ser">Serie</label><input id="ser"></div>
+  <div id="mqs" class="f" style="display:grid;gap:12px"></div>
+  <div class="f"><button class="btn" type="button" id="mq-add" style="width:100%">Agregar otra máquina</button></div>
   </section><section class="gb"><h3 class="gt">Lugar del trabajo</h3>
   <div class="f"><label for="sed">Lugar del trabajo (sede)</label><input id="sed"></div>
   <div class="f"><label for="dir">Dirección del lugar</label><input id="dir"></div>
@@ -242,7 +247,7 @@ body{background:var(--u-page);color:var(--u-tx)}
  <div class="body">
   <div class="trio">
    <div class="box"><h4>Datos del cliente</h4><div><b>Cliente:</b> <span id="o-cli"></span><br><b>Teléfono:</b> <span id="o-ctel"></span></div></div>
-   <div class="box"><h4>Equipo / Máquina</h4><div><b>Equipo:</b> <span id="o-equ"></span><br><b>Marca:</b> <span id="o-mar"></span><br><b>Serie:</b> <span id="o-ser"></span></div></div>
+   <div class="box"><h4>Equipo / Máquina</h4><div id="o-mq"></div></div>
    <div class="box"><h4>Lugar del trabajo</h4><div><b>Sede:</b> <span id="o-sed"></span><br><b>Dirección:</b> <span id="o-dir"></span></div></div>
   </div>
   <table><thead><tr><th style="text-align:left">Descripción</th><th class="w2">Cantidad</th><th class="w3">P. Unitario</th><th class="w4">Importe</th></tr></thead><tbody id="rows"></tbody></table>
@@ -262,13 +267,14 @@ body{background:var(--u-page);color:var(--u-tx)}
 <script>
 (function(){
 var $=function(i){return document.getElementById(i)};
-var T=["nro","ctel","equ","mar","ser","sed","dir","pag","obs"];
+var T=["nro","ctel","sed","dir","pag","obs"];
 var st={g:function(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}},s:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 var clients=st.g("cmv_clients")||[{id:1,n:"Cliente Ejemplo S.A.",t:"385 123 4567",s:"Planta Norte",d:"Ruta 9 km 12, Santiago del Estero"}];
 var isMO=function(t){return /^\s*mano\s+de\s+obra\s*$/i.test(t||"")};
 var cat=(st.g("cmv_catalog")||[{id:1,d:"Reparación de bomba hidráulica",u:"",p:650000},{id:2,d:"Cambio de mangueras",u:"",p:120000}]).filter(function(c){return !isMO(c.d)});
 var demo={nro:"000124",fec:new Date().toISOString().slice(0,10),pag:"Transferencia bancaria",obs:"Trabajo realizado en las instalaciones del cliente.\nGracias por confiar en Caraguay Mecánica Vial.",dsc:"0",equ:"Retroexcavadora",mar:"Caterpillar",ser:"CAT-001"};
 var items=[{d:"",q:1,c:"",p:""}];
+var mq=[{q:demo.equ,m:demo.mar,s:demo.ser}];
 var money=function(n){return "$ "+n.toLocaleString("es-AR",{maximumFractionDigits:2})};
 var num=function(v){var n=parseFloat(v);return isFinite(n)&&n>0?n:0};
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
@@ -292,7 +298,7 @@ function build(){var box=$("its");box.textContent="";items.forEach(function(it,k
  var x=el("div","x");var del=el("button","del","Eliminar ítem");del.type="button";
  del.addEventListener("click",function(){items.splice(k,1);if(!items.length)items.push({d:"",q:1,c:"",p:""});build();draw()});x.appendChild(del);c.appendChild(x);box.appendChild(c)})}
 function draw(){
- T.forEach(function(k){$("o-"+k).textContent=$(k).value});
+ T.forEach(function(k){$("o-"+k).textContent=$(k).value});fillMq($("o-mq"),mq);
  var cs=$("cli");$("o-cli").textContent=cs.value?cs.options[cs.selectedIndex].text:"";
  $("o-fec").textContent="Fecha: "+$("fec").value;
  $("o-nro").textContent="N° "+$("nro").value;
@@ -309,7 +315,7 @@ function fit(){var sh=$("sheet"),w=$("fit");if(!w.clientWidth)return;var k=Math.
 function pick(c){$("cli").value=c?c.id:"";$("ctel").value=c?c.t:"";$("sed").value=c?c.s:"";$("dir").value=c?c.d:""}
 function load(o){T.concat(["fec","dsc"]).forEach(function(k){$(k).value=o[k]||""})}
 T.concat(["fec","dsc"]).forEach(function(k){$(k).addEventListener("input",draw)});
-$("cli").addEventListener("change",function(){var c=clients.filter(function(x){return String(x.id)===$("cli").value})[0];pick(c);draw()});
+$("cli").addEventListener("change",function(){var c=clients.filter(function(x){return String(x.id)===$("cli").value})[0];pick(c);buildMq();draw()});
 $("cn").addEventListener("click",function(){$("pc").open=true;$("pc").scrollIntoView();$("n-n").focus()});
 $("n-ok").addEventListener("click",function(){var n=$("n-n").value.trim();if(!n){alert("Escribí el nombre del cliente.");$("n-n").focus();return}
  var c={id:Date.now(),n:n,t:$("n-t").value.trim(),s:$("n-s").value.trim(),d:$("n-d").value.trim()};
@@ -319,15 +325,26 @@ $("c-ok").addEventListener("click",function(){var d=$("c-d").value.trim();if(!d)
  cat.push({id:Date.now(),d:d,u:$("c-u").value.trim(),p:num($("c-p").value)});st.s("cmv_catalog",cat);
  ["c-d","c-u","c-p"].forEach(function(i){$(i).value=""});listCat();build();$("c-d").focus()});
 $("add").addEventListener("click",function(){items.push({d:"",q:1,c:"",p:""});build();draw();var a=$("its").querySelectorAll(".d input");a[a.length-1].focus()});
+function fillMq(root,l){root.textContent="";if(!l.length)l=[{q:"",m:"",s:""}];
+ if(l.length==1){[["Equipo:",l[0].q],["Marca:",l[0].m],["Serie:",l[0].s]].forEach(function(a,i){if(i)root.appendChild(document.createElement("br"));root.appendChild(el("b","",a[0]));root.appendChild(document.createTextNode(" "+(a[1]||"")))});return}
+ l.forEach(function(m,i){var g=el("span");g.style.display="block";if(i)g.style.marginTop="1.5mm";g.appendChild(el("b","",(i+1)+") "+(m.q||"")));
+  var t=[m.m&&"Marca: "+m.m,m.s&&"Serie: "+m.s].filter(Boolean).join(" \u00b7 ");if(t){g.appendChild(document.createElement("br"));g.appendChild(document.createTextNode(t))}root.appendChild(g)})}
+function buildMq(){var box=$("mqs");box.textContent="";var c=clients.filter(function(x){return String(x.id)===$("cli").value})[0];
+ mq.forEach(function(m,k){var r=el("div","it mq");
+  if(c&&c.e&&c.e.length){var w=el("div","d"),l=el("label","","Elegir de las máquinas del cliente (opcional)"),s=el("select");s.appendChild(opt("","— Elegir máquina —"));c.e.forEach(function(x,i){s.appendChild(opt(i,[x.q,x.m,x.s].filter(Boolean).join(" \u00b7 ")))});
+   s.onchange=function(){var x=c.e[s.value];if(x){m.q=x.q;m.m=x.m||"";m.s=x.s||"";buildMq();draw()}};l.appendChild(s);w.appendChild(l);r.appendChild(w)}
+  r.appendChild(fld("Equipo / máquina",m.q,"",function(v){m.q=v;draw()},"d"));r.appendChild(fld("Marca",m.m,"",function(v){m.m=v;draw()}));r.appendChild(fld("Serie",m.s,"",function(v){m.s=v;draw()}));
+  var x=el("div","x"),b=el("button","del","Quitar máquina");b.type="button";b.onclick=function(){mq.splice(k,1);if(!mq.length)mq.push({q:"",m:"",s:""});buildMq();draw()};x.appendChild(b);r.appendChild(x);box.appendChild(r)})}
+$("mq-add").addEventListener("click",function(){mq.push({q:"",m:"",s:""});buildMq();draw();var a=$("mqs").querySelectorAll(".d input");a[a.length-1].focus()});
 function stamp(){var n=parseInt(st.g("cmv_next"),10)||1,d=new Date();$("nro").value=("000000"+n).slice(-6);$("fec").value=("0"+d.getDate()).slice(-2)+"/"+("0"+(d.getMonth()+1)).slice(-2)+"/"+d.getFullYear()}
 $("pr").addEventListener("click",function(){stamp();draw();saveDoc();st.s("cmv_next",(parseInt(st.g("cmv_next"),10)||1)+1);window.print()});
-window.addEventListener("afterprint",function(){document.body.classList.remove("ph");stamp();draw()});
-$("rs").addEventListener("click",function(){if(confirm("¿Vaciar los datos de este comprobante? Los clientes y el catálogo se conservan.")){load({});stamp();pick(null);$("mo").value="";items=[{d:"",q:1,c:"",p:""}];build();draw()}});
-$("mo").addEventListener("input",draw);window.addEventListener("resize",fit);
+window.addEventListener("afterprint",function(){document.body.classList.remove("hprint");stamp();draw()});
+$("rs").addEventListener("click",function(){if(confirm("¿Vaciar los datos de este comprobante? Los clientes y el catálogo se conservan.")){load({});stamp();pick(null);$("mo").value="";items=[{d:"",q:1,c:"",p:""}];mq=[{q:"",m:"",s:""}];buildMq();build();draw()}});
+$("mo").addEventListener("input",draw);window.addEventListener("resize",fit);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){fit()});
 st.s("cmv_clients",clients);st.s("cmv_catalog",cat);
-load(demo);stamp();cliSel();pick(clients[0]);listClients();listCat();build();draw();
+load(demo);stamp();cliSel();pick(clients[0]);listClients();listCat();build();buildMq();draw();
 /* ===== Navegación, inicio y módulos ===== */
-var docs=st.g("cmv_docs")||[],jobs=st.g("cmv_jobs")||[],R={},ed=null,cur=null,pend=null;
+var docs=st.g("cmv_docs")||[],jobs=st.g("cmv_jobs")||[],R={},ed=null,cur=null,pend=null,curV="";
 var iso=function(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)};
 var fd=function(s){var a=String(s||"").split("-");return a.length==3?a[2]+"/"+a[1]+"/"+a[0]:(s||"")};
 var r2=function(n){return Math.round(n*100)/100};
@@ -337,19 +354,19 @@ var deuda=function(l){return l.reduce(function(a,d){return a+Math.max(0,saldo(d)
 var sv=function(){st.s("cmv_docs",docs);st.s("cmv_jobs",jobs);st.s("cmv_clients",clients)};
 var btn=function(c,t,f){var b=el("button",c,t);b.type="button";b.onclick=f;return b};
 var VIEWS=["inicio","factura","clientes","trabajos","historial","pagos"];
-function show(v){VIEWS.forEach(function(n){$(n=="inicio"?"home":"v-"+n).hidden=n!==v});window.scrollTo(0,0);if(v=="factura")fit();if(R[v])R[v]()}
+function show(v){curV=v;VIEWS.forEach(function(n){$(n=="inicio"?"home":"v-"+n).hidden=n!==v});window.scrollTo(0,0);if(v=="factura")fit();if(R[v])R[v]()}
 function route(){var v=location.hash.slice(1);show(VIEWS.indexOf(v)<0?"inicio":v)}
-window.addEventListener("hashchange",route);
+window.addEventListener("hashchange",function(){var v=location.hash.slice(1);if(VIEWS.indexOf(v)<0)v="inicio";if(v!==curV)show(v)});
 document.addEventListener("click",function(e){var b=e.target.closest("[data-go]");if(b){location.hash=b.getAttribute("data-go");route()}});
 /* guardar comprobante emitido (copia fija) */
 function saveDoc(){var cs=$("cli"),sub=0,its=items.map(function(it){var cn=cat.filter(function(y){return it.c&&String(y.id)===String(it.c)})[0];return{n:cn?cn.d:"",d:it.d,q:it.q,p:num(it.p)}}).filter(function(i){return i.n||i.d||i.p>0});
  var mo=num($("mo").value);its.forEach(function(i){sub+=i.q*i.p});sub+=mo;if(!its.length&&!(mo>0))return;var dsc=Math.min(num($("dsc").value),sub);
  var d={id:Date.now(),nro:$("nro").value,fec:$("fec").value,cid:cs.value,cli:cs.value?cs.options[cs.selectedIndex].text:"Sin cliente"};
- ["ctel","equ","mar","ser","sed","dir","pag","obs"].forEach(function(k){d[k]=$(k).value});d.items=its;d.mo=mo;d.dsc=dsc;d.tot=r2(sub-dsc);d.pagos=[];docs.push(d);sv()}
+ ["ctel","sed","dir","pag","obs"].forEach(function(k){d[k]=$(k).value});d.mq=mq.filter(function(m){return m.q||m.m||m.s}).map(function(m){return{q:m.q,m:m.m,s:m.s}});d.items=its;d.mo=mo;d.dsc=dsc;d.tot=r2(sub-dsc);d.pagos=[];docs.push(d);sv()}
 /* hoja de un comprobante guardado (misma hoja, sin cambiar su diseño) */
-function mk(d){var c=$("sheet").cloneNode(true),q=function(i){return c.querySelector("#"+i)};c.style.transform="none";
+function mk(d){var c=$("sheet").cloneNode(true),q=function(i){return c.querySelector("#"+i)};c.removeAttribute("id");c.style.transform="none";
  q("o-nro").textContent="N° "+d.nro;q("o-fec").textContent="Fecha: "+d.fec;
- ["cli","ctel","equ","mar","ser","sed","dir","pag","obs"].forEach(function(k){q("o-"+k).textContent=d[k]||""});
+ ["cli","ctel","sed","dir","pag","obs"].forEach(function(k){q("o-"+k).textContent=d[k]||""});fillMq(q("o-mq"),d.mq||[{q:d.equ,m:d.mar,s:d.ser}]);
  var tb=q("rows");tb.textContent="";d.items.forEach(function(it){var r=el("tr"),td=el("td");if(it.n)td.appendChild(el("b","",it.n));if(it.n&&it.d)td.appendChild(document.createElement("br"));if(it.d)td.appendChild(document.createTextNode(it.d));
   r.appendChild(td);r.appendChild(el("td","c",String(it.q)));r.appendChild(el("td","r",money(it.p)));r.appendChild(el("td","r",money(it.q*it.p)));tb.appendChild(r)});
  var e=el("tr");for(var i=0;i<4;i++)e.appendChild(el("td","","\u00a0"));tb.appendChild(e);
@@ -361,7 +378,7 @@ R.inicio=function(){$("s-c").textContent=clients.length+" registrados";$("s-t").
 /* CLIENTES */
 function eqList(){var b=$("k-el");b.textContent="";((ed&&ed.e)||[]).forEach(function(m,i){var r=el("div","li"),t=el("div");t.appendChild(el("strong","",m.q));t.appendChild(el("small","",[m.m,m.s].filter(Boolean).join(" · ")));r.appendChild(t);r.appendChild(btn("del","Quitar",function(){ed.e.splice(i,1);sv();eqList()}));b.appendChild(r)})}
 function editC(c){ed=c;$("k-n").value=c?c.n:"";$("k-t").value=c?c.t:"";$("k-s").value=c?c.s:"";$("k-d").value=c?c.d:"";$("cf-t").textContent=c?"Editar cliente":"Cliente nuevo";$("k-eqw").hidden=!c;$("k-cx").hidden=!c;if(c){if(!c.e)c.e=[];$("cf").open=true;$("cf").scrollIntoView()}eqList()}
-function afterC(){sv();cliSel();listClients();R.clientes()}
+function afterC(){sv();cliSel();buildMq();listClients();R.clientes()}
 $("k-ok").onclick=function(){var n=$("k-n").value.trim();if(!n){alert("Escribí el nombre del cliente.");$("k-n").focus();return}
  var v={n:n,t:$("k-t").value.trim(),s:$("k-s").value.trim(),d:$("k-d").value.trim()};
  if(ed){Object.assign(ed,v);afterC();editC(null)}else{var c=Object.assign({id:Date.now(),e:[]},v);clients.push(c);afterC();editC(c)}};
@@ -400,7 +417,7 @@ R.historial=function(){if(cur&&!$("h-det").hidden){openDoc(cur);return}$("h-det"
   var u=el("div");u.appendChild(el("strong","",money(d.tot)));u.appendChild(document.createElement("br"));u.appendChild(el("span","tg"+(s<=0?" ok":""),s<=0?"Pagado":"Saldo "+money(s)));r.appendChild(t);r.appendChild(u);r.onclick=function(){openDoc(d)};b.appendChild(r)})};
 $("h-q").addEventListener("input",function(){cur=null;R.historial()});
 $("h-bk").onclick=function(){cur=null;R.historial()};
-$("h-pr").onclick=function(){var h=$("hp");h.textContent="";h.appendChild(mk(cur));document.body.classList.add("ph");window.print()};
+$("h-pr").onclick=function(){var h=$("hp");h.textContent="";h.appendChild(mk(cur));document.body.classList.add("hprint");window.print()};
 $("h-pg").onclick=function(){pend=cur.id;location.hash="pagos";route()};
 window.addEventListener("resize",function(){if(cur&&!$("h-det").hidden){var p=$("h-pv");if(p.firstChild)fitBox(p,p.firstChild)}});
 /* PAGOS Y DEUDAS */
