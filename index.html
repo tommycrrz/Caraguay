@@ -304,7 +304,7 @@ body{background:var(--i-bg);color:var(--i-tx)}
   </div>
   <table><thead><tr><th style="text-align:left">Descripción</th><th class="w2">Cantidad</th><th class="w3">P. Unitario</th><th class="w4">Importe</th></tr></thead><tbody id="rows"></tbody></table>
   <div class="mo" id="o-mow" hidden><span>Mano de obra</span><span id="o-mo"></span></div>
-  <div class="tot"><div><span>Subtotal</span><span id="o-sub"></span></div><div><span>Descuento</span><span id="o-dsc"></span></div><div class="t"><span>Total</span><span id="o-tot"></span></div></div>
+  <div class="tot"><div><span>Subtotal</span><span id="o-sub"></span></div><div id="o-dscw"><span>Descuento</span><span id="o-dsc"></span></div><div class="t"><span>Total</span><span id="o-tot"></span></div></div>
   <div class="duo">
    <div class="box"><h4>Forma de pago</h4><div id="o-pag"></div></div>
    <div class="box"><h4>Observaciones</h4><div class="pre" id="o-obs"></div></div>
@@ -355,7 +355,7 @@ function draw(){
  var e=el("tr");for(var i=0;i<4;i++)e.appendChild(el("td","","\u00a0"));tb.appendChild(e);
  var mo=num($("mo").value);s+=mo;$("o-mo").textContent=money(mo);$("o-mow").hidden=!(mo>0);
  var dsc=Math.min(num($("dsc").value),s);
- $("o-sub").textContent=money(s);$("o-dsc").textContent=money(dsc);$("o-tot").textContent=money(s-dsc);
+ $("o-sub").textContent=money(s);$("o-dsc").textContent=money(dsc);$("o-dscw").style.display=dsc>0?"":"none";$("o-tot").textContent=money(s-dsc);
  fit()}
 function fit(){var sh=$("sheet"),w=$("fit");if(!w.clientWidth)return;var k=Math.min(1,w.clientWidth/sh.offsetWidth);
  sh.style.transform=k<1?"scale("+k+")":"none";w.style.height=k<1?Math.ceil(sh.offsetHeight*k)+"px":"auto"}
@@ -414,7 +414,7 @@ function mk(d){var c=$("sheet").cloneNode(true),q=function(i){return c.querySele
  var tb=q("rows");tb.textContent="";d.items.forEach(function(it){var r=el("tr"),td=el("td");if(it.n)td.appendChild(el("b","",it.n));if(it.n&&it.d)td.appendChild(document.createElement("br"));if(it.d)td.appendChild(document.createTextNode(it.d));
   r.appendChild(td);r.appendChild(el("td","c",String(it.q)));r.appendChild(el("td","r",money(it.p)));r.appendChild(el("td","r",money(it.q*it.p)));tb.appendChild(r)});
  var e=el("tr");for(var i=0;i<4;i++)e.appendChild(el("td","","\u00a0"));tb.appendChild(e);
- q("o-mo").textContent=money(d.mo);q("o-mow").hidden=!(d.mo>0);q("o-sub").textContent=money(d.tot+d.dsc);q("o-dsc").textContent=money(d.dsc);q("o-tot").textContent=money(d.tot);
+ q("o-mo").textContent=money(d.mo);q("o-mow").hidden=!(d.mo>0);q("o-sub").textContent=money(d.tot+d.dsc);q("o-dsc").textContent=money(d.dsc);q("o-dscw").style.display=d.dsc>0?"":"none";q("o-tot").textContent=money(d.tot);
  c.querySelectorAll("[id]").forEach(function(x){x.removeAttribute("id")});return c}
 function fitBox(b,s){var k=Math.min(1,b.clientWidth/s.offsetWidth);s.style.transformOrigin="top left";s.style.transform=k<1?"scale("+k+")":"none";b.style.height=k<1?Math.ceil(s.offsetHeight*k)+"px":"auto"}
 /* INICIO */
